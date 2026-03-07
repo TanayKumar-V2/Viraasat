@@ -1,9 +1,6 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import dbConnect from "@/lib/db";
 import Product from "@/models/Product";
-import { Button } from "@/components/ui/button";
-import { ShoppingBag } from "lucide-react";
 import ProductVariants from "@/components/ProductVariants";
 
 async function getProductDetails(id: string) {
@@ -71,14 +68,19 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
                     </div>
 
                     <div className="border-t border-b py-8">
-                        <ProductVariants sizes={product.sizes} colors={product.colors} />
+                        <ProductVariants
+                            product={{
+                                id: product._id.toString(),
+                                title: product.title,
+                                price: product.price,
+                                image: product.images[0],
+                            }}
+                            sizes={product.sizes}
+                            colors={product.colors}
+                        />
                     </div>
 
                     <div className="space-y-4">
-                        <Button size="lg" className="w-full text-lg h-14 uppercase tracking-wider font-bold">
-                            <ShoppingBag className="w-5 h-5 mr-2" />
-                            Add to Cart
-                        </Button>
                         <p className="text-center text-sm text-muted-foreground">
                             Free shipping on orders over ₹2000. 14-day hassle-free returns.
                         </p>

@@ -65,7 +65,8 @@ export default function RegisterPage() {
             }
 
             router.push("/login?registered=true");
-        } catch (err: any) {
+        } catch (err: unknown) {
+      if (!(err instanceof Error)) return;
             setError(err.message);
         } finally {
             setIsLoading(false);

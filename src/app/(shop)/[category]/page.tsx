@@ -34,7 +34,7 @@ export default async function CategoryPage({ params }: { params: { category: str
         <div className="container mx-auto px-4 py-12 min-h-screen">
             <div className="mb-12 border-b pb-8">
                 <h1 className="text-4xl font-extrabold tracking-tight uppercase capitalize">
-                    {category}'s Collection
+                    {category}&apos;s Collection
                 </h1>
                 <p className="text-muted-foreground mt-2">
                     Explore our exclusive premium print-on-demand streetwear for {category}.

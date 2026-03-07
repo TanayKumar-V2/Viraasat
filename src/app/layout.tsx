@@ -1,3 +1,4 @@
+import Providers from "@/components/Providers";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import type { Metadata } from "next";
@@ -34,11 +35,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background text-foreground flex flex-col`}
       >
-        <Navbar />
-        <main className="flex-1 pt-20">
-          {children}
-        </main>
-        <Footer />
+        <Providers>
+          <Navbar />
+          <main className="flex-1 pt-20">
+            {children}
+          </main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
