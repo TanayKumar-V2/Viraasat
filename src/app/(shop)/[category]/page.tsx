@@ -20,9 +20,10 @@ async function getCategoryProducts(category: string) {
     }
 }
 
-export default async function CategoryPage({ params }: { params: { category: string } }) {
+export default async function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
+    const { category: rawCategory } = await params;
     const allowedCategories = ["men", "women", "unisex"];
-    const category = params.category.toLowerCase();
+    const category = rawCategory.toLowerCase();
 
     if (!allowedCategories.includes(category)) {
         notFound();

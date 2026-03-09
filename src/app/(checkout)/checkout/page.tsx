@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useCartStore } from "@/store/cartStore";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
 import { Button } from "@/components/ui/button";
@@ -29,13 +29,20 @@ export default function CheckoutPage() {
     const [isProcessing, setIsProcessing] = useState(false);
 
     const [shippingDetails, setShippingDetails] = useState({
-        name: session?.user?.name || "",
+        name: "",
         phone: "",
         addressLine1: "",
         city: "",
         state: "",
         pincode: "",
     });
+
+    // Sync session name once it loads (session is null on first render)
+    useEffect(() => {
+        if (session?.user?.name) {
+            setShippingDetails(prev => ({ ...prev, name: session.user!.name! }));
+        }
+    }, [session]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -86,11 +93,9 @@ export default function CheckoutPage() {
 
                     if (verifyRes.ok) {
                         clearCart();
-                        // In a real app we'd redirect to a dedicated success page
-                        alert("Payment Successful! Order Placed.");
-                        router.push("/");
+                        router.push(`/order-success/${orderData.orderId}`);
                     } else {
-                        alert("Payment verification failed.");
+                        alert("Payment verification failed. Please contact support.");
                     }
                 },
                 prefill: {

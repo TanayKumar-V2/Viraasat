@@ -43,18 +43,56 @@ export const authOptions: NextAuthOptions = {
         }),
     ],
     callbacks: {
+        async signIn({ user, account, profile }) {
+            if (account?.provider === "google") {
+                try {
+                    await dbConnect();
+                    // Check if user exists
+                    let dbUser = await User.findOne({ email: user.email });
+
+                    if (!dbUser) {
+                        // Create user in DB for Google users
+                        dbUser = await User.create({
+                            name: user.name,
+                            email: user.email,
+                            role: "user", // Default role
+                        });
+                    }
+
+                    // Attach DB ID and role to the NextAuth user object
+                    // so the jwt callback can access it immediately
+                    user.id = dbUser._id.toString();
+                    user.role = dbUser.role;
+                    return true;
+                } catch (error) {
+                    console.error("Error saving Google user to DB:", error);
+                    return false;
+                }
+            }
+            return true;
+        },
+        async jwt({ token, user, trigger, session }) {
+            // Initial sign in
+            if (user) {
+                // For credentials, user already contains the DB document from authorize()
+                // For Google, user now contains the decorated fields from signIn()
+                token.sub = user.id;
+                token.role = user.role;
+            }
+
+            // Optional: allow updating role without relogging
+            if (trigger === "update" && session?.user?.role) {
+                token.role = session.user.role;
+            }
+
+            return token;
+        },
         async session({ session, token }) {
             if (session.user && token.sub) {
                 session.user.id = token.sub;
                 session.user.role = token.role as string;
             }
             return session;
-        },
-        async jwt({ token, user }) {
-            if (user) {
-                token.role = user.role;
-            }
-            return token;
         },
     },
     pages: {

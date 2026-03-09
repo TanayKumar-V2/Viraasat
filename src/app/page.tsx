@@ -21,27 +21,32 @@ async function getFeaturedProducts() {
   }
 }
 
+export const revalidate = 0; // Disable static caching so the db is queried on load
+
 export default async function Home() {
   const featuredProducts = await getFeaturedProducts();
 
   const heroSlides = [
     {
       id: 1,
-      image: "https://placehold.co/1200x600/111111/FFFFFF/png?text=VIRAASAT+SEASON+1",
+      image: "https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&q=80&w=2000",
       title: "VIRAASAT SEASON 1",
       subtitle: "The dawn of a new era in streetwear.",
+      href: "/men",
     },
     {
       id: 2,
-      image: "https://placehold.co/1200x600/111111/FFFFFF/png?text=CYBERPUNK+COLLECTION",
+      image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=2000",
       title: "CYBERPUNK ESSENTIALS",
       subtitle: "Gear up for the neon-lit future.",
+      href: "/women",
     },
     {
       id: 3,
-      image: "https://placehold.co/1200x600/111111/FFFFFF/png?text=ANIME+DROPS",
+      image: "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&q=80&w=2000",
       title: "ANIME INSPIRED",
       subtitle: "Art that speaks your language.",
+      href: "/unisex",
     }
   ];
 
@@ -74,7 +79,7 @@ export default async function Home() {
                       {slide.subtitle}
                     </p>
                     <Link
-                      href="/men"
+                      href={slide.href}
                       className="bg-white text-black px-8 py-3 rounded-md font-bold hover:bg-zinc-200 transition-colors"
                     >
                       Shop Collection
@@ -132,14 +137,14 @@ export default async function Home() {
       <section className="pb-20 px-6 max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-6">
         <Link href="/men" className="relative h-[400px] rounded-lg overflow-hidden group">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="https://placehold.co/800x800/111111/FFFFFF/png?text=MEN" alt="Men" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          <img src="https://images.unsplash.com/photo-1492288991661-058aa541ff43?auto=format&fit=crop&q=80&w=800" alt="Men" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
           <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
             <h2 className="text-4xl font-bold text-white tracking-widest uppercase">Men</h2>
           </div>
         </Link>
         <Link href="/women" className="relative h-[400px] rounded-lg overflow-hidden group">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="https://placehold.co/800x800/111111/FFFFFF/png?text=WOMEN" alt="Women" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+          <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=800" alt="Women" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
           <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
             <h2 className="text-4xl font-bold text-white tracking-widest uppercase">Women</h2>
           </div>
