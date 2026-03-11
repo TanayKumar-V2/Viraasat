@@ -20,22 +20,25 @@ if (!cached) {
   cached = global.mongoose = { conn: null, promise: null };
 }
 
+// At this point `cached` is always defined — tells TypeScript to trust this
+const cache = cached as NonNullable<typeof cached>;
+
 async function dbConnect() {
-  if (cached.conn) {
-    return cached.conn;
+  if (cache.conn) {
+    return cache.conn;
   }
 
-  if (!cached.promise) {
+  if (!cache.promise) {
     const opts = {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI as string, opts).then((mongoose) => {
+    cache.promise = mongoose.connect(MONGODB_URI as string, opts).then((mongoose) => {
       return mongoose;
     });
   }
-  cached.conn = await cached.promise;
-  return cached.conn;
+  cache.conn = await cache.promise;
+  return cache.conn;
 }
 
 export default dbConnect;
